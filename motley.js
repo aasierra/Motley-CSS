@@ -99,7 +99,15 @@ module.exports = function (options) {
 			}
 			var importName = "";
 			if (i + 1 < files.length) {
-				importName = fileName.substring(0, options.fileName.indexOf(".css")) + (i + 1) + ".css";
+				if (fileName.match("/").length) {
+					var parts = fileName.split("/");
+					if (parts.length) {
+						var toSubString = parts[parts.length-1];
+						importName = toSubString.substring(0, toSubString.indexOf(".css")) + (i + 1) + ".css";
+					}
+				} else {
+					importName = fileName.substring(0, options.fileName.indexOf(".css")) + (i + 1) + ".css";
+				}
 			}
 			var importText = "";
 			if (importName) {
