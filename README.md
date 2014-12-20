@@ -1,4 +1,4 @@
-<h1>Motley CSS</h1>
+<h1>Motley CSS - Current version is 1.0.4</h1>
 <p>A tool for splitting CSS files to fix the Internet Explorer selector limit of 4096 bug.</p>
 <h1>Getting started</h1>
 <p>

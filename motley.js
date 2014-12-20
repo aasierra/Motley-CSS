@@ -9,7 +9,8 @@ The motley global object takes in the following options
 	fileName:'',
 	limit:4000,
 	diagnostics:false,
-	callback:Function
+	callback:Function,
+	compress:false
 }
 */
 
@@ -51,6 +52,8 @@ module.exports = function (options) {
 	//An amount that lets us know how many nests we are entering so we can leave them before cutting the file off.
 	var contextCount = 0;
 
+	var selectorBuffer = "";
+
 	if (options.diagnostics) {
 		console.log("Starting");
 	}
@@ -65,16 +68,30 @@ module.exports = function (options) {
 			commentCount++;	
 		}
 		if (!inComment) {
+			selectorBuffer += (options.compress) ? line : "\n" + line;
 			if(line.indexOf("{") >= 0) {
+				//If we find any commas because the selector being a multi line selector or possibly
+				//This bracket is on a new line then we need to go back and count the commas.
+				//If there was no commas then this is a single selector
+				if (selectorBuffer.indexOf("@media") < 0 && contextCount == 0 && selectorBuffer.split(",") && selectorBuffer.split(",").length) {
+					selectorCount += selectorBuffer.split(',').length;
+				} else if (selectorBuffer.indexOf('@media') >= 0 && contextCount == 1) {
+					var afterQuery = selectorBuffer.substring(selectorBuffer.indexOf("{"), selectorBuffer.length);
+					selectorCount += afterQuery.split(",").length;
+				} else {
+					selectorCount++;
+				}
 				contextCount++;
-				selectorCount++;
 				if (selectorCount >= selectorLimit) {
 					nextClear = true;
 				}
 			}
-			fileOutput += "\n" + line;
 			if (line.indexOf("}") >= 0) {
 				contextCount--;
+				if (contextCount == 0) {
+					fileOutput += "\n" + selectorBuffer;
+					selectorBuffer = "";
+				}
 				if (nextClear && contextCount == 0) {
 					files.push(fileOutput);
 					fileOutput = "";
@@ -92,6 +109,7 @@ module.exports = function (options) {
 	lr.on("end", function () {
 		var fs = require("fs");
 		files.push(fileOutput);
+		totalSelectorCount += selectorCount;
 		for (var i = 0; i < files.length; i++) {
 			var fileName = options.fileName;
 			if (i > 0) {
@@ -124,7 +142,7 @@ module.exports = function (options) {
 		}
 		if (options.diagnostics) {
 			console.log("Comments : " + commentCount);
-			console.log("Selectors : " + selectorCount);
+			console.log("Selectors : " + totalSelectorCount);
 		}
 		if(options.callback) {
 			options.callback();

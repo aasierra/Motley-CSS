@@ -1,6 +1,6 @@
 {
   "name": "motleycss",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A tool that splits large CSS files to fix the internet explorer selector limit bug",
   "main": "motley.js",
   "scripts": {
