@@ -1,0 +1,38 @@
+{
+  "name": "MotleyCss",
+  "version": "1.0.0",
+  "description": "A tool that splits large CSS files to fix the internet explorer selector limit bug",
+  "main": "motley.js",
+  "scripts": {
+    "test": "testmotley"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aasierra/Motley-CSS.git"
+  },
+  "keywords": [
+    "internet",
+    "explorer",
+    "selector",
+    "limit",
+    "motley",
+    "css"
+  ],
+  "author": "Anthony A Sierra <aasierra@live.com> (http://www.anthonysierra.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aasierra/Motley-CSS/issues"
+  },
+  "homepage": "https://github.com/aasierra/Motley-CSS",
+  "dependencies":{
+    "line-by-line":"0.1.3"
+  },
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "mocha": "^2.0.1",
+    "line-by-line":"0.1.3"
+  },
+  "scripts":{
+    "test":"make test"
+  }
+}
