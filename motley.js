@@ -72,8 +72,8 @@ module.exports = function (options) {
 					nextClear = true;
 				}
 			}
-			fileOutput = "\n" + line;
-			if (line.indexOf("}")) {
+			fileOutput += "\n" + line;
+			if (line.indexOf("}") >= 0) {
 				contextCount--;
 				if (nextClear && contextCount == 0) {
 					files.push(fileOutput);
@@ -99,26 +99,27 @@ module.exports = function (options) {
 			}
 			var importName = "";
 			if (i + 1 < files.length) {
-				importName = fileName.substring(0, fileName.indexOf(".css")) + (i + 1) + ".css";
+				importName = fileName.substring(0, options.fileName.indexOf(".css")) + (i + 1) + ".css";
 			}
 			var importText = "";
 			if (importName) {
 				importText = "@import url('" + importName + "');\n";
 			}
-			fs.writeToFile(fileName, importText + files[i], function (error) {
+			var outputPrint = function (error) {
 				if (error) {
 					console.log(error);
 				} else {
-					console.log(fileName + " was created.");
+					console.log("File was created.");
 				}
-			});
+			};
+			fs.writeFile(fileName, importText + files[i], outputPrint);
 		}
 		if (options.diagnostics) {
 			console.log("Comments : " + commentCount);
 			console.log("Selectors : " + selectorCount);
 		}
-		if(callback) {
-			callback();
+		if(options.callback) {
+			options.callback();
 		}
 	});
 }

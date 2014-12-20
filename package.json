@@ -1,6 +1,6 @@
 {
-  "name": "MotleyCss",
-  "version": "1.0.0",
+  "name": "motleycss",
+  "version": "1.0.1",
   "description": "A tool that splits large CSS files to fix the internet explorer selector limit bug",
   "main": "motley.js",
   "scripts": {
@@ -25,12 +25,14 @@
   },
   "homepage": "https://github.com/aasierra/Motley-CSS",
   "dependencies":{
-    "line-by-line":"0.1.3"
+    "line-by-line":"0.1.3",
+    "node-fs":"0.1.7"
   },
   "devDependencies": {
     "chai": "^1.10.0",
     "mocha": "^2.0.1",
-    "line-by-line":"0.1.3"
+    "line-by-line":"0.1.3",
+    "node-fs":"0.1.7"
   },
   "scripts":{
     "test":"make test"
